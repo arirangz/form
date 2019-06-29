@@ -665,12 +665,12 @@
 								// if using the $.param format that allows for multiple values with the same name
 								if ($.isPlainObject(s.extraData[n]) && s.extraData[n].hasOwnProperty('name') && s.extraData[n].hasOwnProperty('value')) {
 									extraInputs.push(
-										$('<input type="hidden" name="' + s.extraData[n].name + '">', ownerDocument).val(s.extraData[n].value)
-											.appendTo(form)[0]);
+									$('<input type="hidden" name="' + s.extraData[n].name + '">', ownerDocument).val(s.extraData[n].value)
+										.appendTo(form)[0]);
 								} else {
 									extraInputs.push(
-										$('<input type="hidden" name="' + n + '">', ownerDocument).val(s.extraData[n])
-											.appendTo(form)[0]);
+									$('<input type="hidden" name="' + n + '">', ownerDocument).val(s.extraData[n])
+										.appendTo(form)[0]);
 								}
 							}
 						}
@@ -736,8 +736,7 @@
 
 					return;
 
-				}
-				if (e === SERVER_ABORT && xhr) {
+				} else if (e === SERVER_ABORT && xhr) {
 					xhr.abort('server abort');
 					deferred.reject(xhr, 'error', 'server abort');
 
@@ -985,7 +984,7 @@
 
 		// in jQuery 1.3+ we can fix mistakes with the ready state
 		if (!options.delegation && this.length === 0) {
-			var o = {s: this.selector, c: this.context};
+			var o = {s: options.selector, c: this.context};
 
 			if (!$.isReady && o.s) {
 				log('DOM not ready, queuing ajaxForm');
@@ -1004,10 +1003,10 @@
 
 		if (options.delegation) {
 			$(document)
-				.off('submit.form-plugin', this.selector, doAjaxSubmit)
-				.off('click.form-plugin', this.selector, captureSubmittingElement)
-				.on('submit.form-plugin', this.selector, options, doAjaxSubmit)
-				.on('click.form-plugin', this.selector, options, captureSubmittingElement);
+				.off('submit.form-plugin', options.selector, doAjaxSubmit)
+				.off('click.form-plugin', options.selector, captureSubmittingElement)
+				.on('submit.form-plugin', options.selector, options, doAjaxSubmit)
+				.on('click.form-plugin', options.selector, options, captureSubmittingElement);
 
 			return this;
 		}
@@ -1406,7 +1405,7 @@
 			switch (tag) {
 			case 'input':
 				this.checked = this.defaultChecked;
-				// fall through
+					// fall through
 
 			case 'textarea':
 				this.value = this.defaultValue;
@@ -1454,8 +1453,8 @@
 				return true;
 
 			case 'form':
-				// guard against an input with the name of 'reset'
-				// note that IE reports the reset function as an 'object'
+					// guard against an input with the name of 'reset'
+					// note that IE reports the reset function as an 'object'
 				if (typeof this.reset === 'function' || (typeof this.reset === 'object' && !this.reset.nodeType)) {
 					this.reset();
 				}
